@@ -30328,12 +30328,12 @@ var MaskedNumber = class extends Masked {
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, this.thousandsSeparator);
     return parts.join(this.radix);
   }
-  doPrepare(ch) {
-    let flags = arguments.length > 1 && arguments[1] !== void 0 ? arguments[1] : {};
-    ch = this._removeThousandsSeparators(this.scale && this.mapToRadix.length && (flags.input && flags.raw || !flags.input && !flags.raw) ? ch.replace(this._mapToRadixRegExp, this.radix) : ch);
-    const [prepCh, details] = normalizePrepare(super.doPrepare(ch, flags));
-    if (ch && !prepCh)
-      details.skip = true;
+  doPrepare (ch, ...args) {
+    ch = this._removeThousandsSeparators(
+      this.scale && this.mapToRadix.length ? ch.replace(this._mapToRadixRegExp, this.radix) : ch
+    );
+    const [prepCh, details] = normalizePrepare(super.doPrepare(ch, ...args));
+    if (ch && !prepCh) details.skip = true;
     return [prepCh, details];
   }
   _separatorsCount(to) {
